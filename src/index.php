@@ -71,10 +71,8 @@ function statement($invoice, $plays)
         // print line for this order
         $result .= '  ' . $playFor($perf)['name']. ': ' . $usd($amountFor($perf)) . "(${perf['audience']} seats)" . PHP_EOL;
     }
-    $totalAmount = $appleSause();
 
-
-    $result .= 'Amount owed is ' . $usd($totalAmount) . PHP_EOL;
+    $result .= 'Amount owed is ' . $usd($appleSause()) . PHP_EOL;
     $result .= 'You earned '. $totalVolumeCredits() . ' credits' . PHP_EOL;
     return $result;
 }
