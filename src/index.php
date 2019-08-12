@@ -1,6 +1,10 @@
 <?php
 
-function statement($invoice, $plays)
+function statement($invoice, $plays){
+    return renderPlainText($invoice, $plays);
+}
+
+function renderPlainText($invoice, $plays)
 {
     $playFor = function ($perf) use ($plays) {
         return $plays[$perf['playID']];
