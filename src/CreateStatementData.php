@@ -68,9 +68,12 @@ class CreateStatementData
             $amountFor,
             $volumeCreditsFor
         ) {
-            $performanceCalculator = new PerformanceCalculator($aPerformance);
+            $performanceCalculator = new PerformanceCalculator(
+                $aPerformance,
+                $playFor($aPerformance)
+            );
 
-            $aPerformance['play'] = $playFor($aPerformance);
+            $aPerformance['play'] = $performanceCalculator->play();
             $aPerformance['amount'] = $amountFor($aPerformance);
             $aPerformance['volumeCredits'] = $volumeCreditsFor($aPerformance);
             return $aPerformance;
