@@ -15,4 +15,9 @@ class ComedyCalculator extends PerformanceCalculator
         $result += 300 * $this->aPerformance['audience'];
         return $result;
     }
+
+    public function volumeCredits()
+    {
+        return parent::volumeCredits() + floor($this->aPerformance['audience'] / 5);
+    }
 }

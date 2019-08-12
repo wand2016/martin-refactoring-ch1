@@ -10,8 +10,7 @@ abstract class PerformanceCalculator
     public function __construct(
         $aPerformance,
         $aPlay
-    )
-    {
+    ) {
         $this->aPerformance = $aPerformance;
         $this->aPlay = $aPlay;
     }
@@ -26,10 +25,8 @@ abstract class PerformanceCalculator
         throw new Error('subclass responsibility');
     }
 
-    public function volumeCredits() {
-        $result = 0;
-        $result += max($this->aPerformance['audience'] - 30, 0);
-        if ('comedy' === $this->play()['type']) $result += floor($this->aPerformance['audience'] / 5);
-        return $result;
+    public function volumeCredits()
+    {
+        return max($this->aPerformance['audience'] - 30, 0);
     }
 }
