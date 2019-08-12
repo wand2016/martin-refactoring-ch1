@@ -11,9 +11,9 @@ function statement($invoice, $plays)
 function renderPlainText($data)
 {
     $result = "Statement for ${data['customer']}";
-    foreach ($data['performances'] as $perf) {
+    foreach ($data['performances'] as $aPerformance) {
         // print line for this order
-        $result .= '  ' . $perf['play']['name'] . ': ' . usd($perf['amount']) . "(${perf['audience']} seats)" . PHP_EOL;
+        $result .= '  ' . $aPerformance['play']['name'] . ': ' . usd($aPerformance['amount']) . "(${aPerformance['audience']} seats)" . PHP_EOL;
     }
 
     $result .= 'Amount owed is ' . usd($data['totalAmount']) . PHP_EOL;
