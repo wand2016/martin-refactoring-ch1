@@ -60,8 +60,12 @@ function statement($invoice, $plays)
     foreach ($invoice['performances'] as $perf) {
         // print line for this order
         $result .= '  ' . $playFor($perf)['name']. ': ' . $usd($amountFor($perf)) . "(${perf['audience']} seats)" . PHP_EOL;
+    }
+    foreach ($invoice['performances'] as $perf) {
         $totalAmount += $amountFor($perf);
     }
+
+
     $result .= 'Amount owed is ' . $usd($totalAmount) . PHP_EOL;
     $result .= 'You earned '. $totalVolumeCredits() . ' credits' . PHP_EOL;
     return $result;
