@@ -2,7 +2,7 @@
 
 namespace App;
 
-class PerformanceCalculator
+abstract class PerformanceCalculator
 {
     protected $aPerformance;
     protected $aPlay;
@@ -23,18 +23,7 @@ class PerformanceCalculator
 
     public function amount()
     {
-        $result = 0;
-        switch ($this->play()['type']) {
-            case 'tragedy':
-                throw new Error('boo');
-                break;
-            case 'comedy':
-                throw new Error('bee');
-                break;
-            default:
-                throw new Error('unknown type: ' . $this->play()['type']);
-        }
-        return $result;
+        throw new Error('subclass responsibility');
     }
 
     public function volumeCredits() {
