@@ -1,10 +1,11 @@
 <?php
 
 function statement($invoice, $plays){
-    return renderPlainText($invoice, $plays);
+    $statementData = [];
+    return renderPlainText($statementData, $invoice, $plays);
 }
 
-function renderPlainText($invoice, $plays)
+function renderPlainText($data, $invoice, $plays)
 {
     $playFor = function ($perf) use ($plays) {
         return $plays[$perf['playID']];
