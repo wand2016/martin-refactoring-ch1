@@ -6,8 +6,7 @@ function statement($invoice, $plays)
         return $plays[$perf['playID']];
     };
 
-    $amountFor = function ($aPerformance) use ($playFor)
-    {
+    $amountFor = function ($aPerformance) use ($playFor) {
         $result = 0;
         switch ($playFor($aPerformance)['type']) {
             case 'tragedy':
@@ -37,12 +36,12 @@ function statement($invoice, $plays)
         return $result;
     };
 
-    $usd = function($aNumber) {
+    $usd = function ($aNumber) {
         $format = '$%.2f';
         return sprintf($format, $aNumber / 100);
     };
 
-    $totalVolumeCredits = function() use (
+    $totalVolumeCredits = function () use (
         $invoice,
         $volumeCreditsFor
     ) {
@@ -69,10 +68,10 @@ function statement($invoice, $plays)
     $result = "Statement for ${invoice['customer']}";
     foreach ($invoice['performances'] as $perf) {
         // print line for this order
-        $result .= '  ' . $playFor($perf)['name']. ': ' . $usd($amountFor($perf)) . "(${perf['audience']} seats)" . PHP_EOL;
+        $result .= '  ' . $playFor($perf)['name'] . ': ' . $usd($amountFor($perf)) . "(${perf['audience']} seats)" . PHP_EOL;
     }
 
     $result .= 'Amount owed is ' . $usd($totalAmount()) . PHP_EOL;
-    $result .= 'You earned '. $totalVolumeCredits() . ' credits' . PHP_EOL;
+    $result .= 'You earned ' . $totalVolumeCredits() . ' credits' . PHP_EOL;
     return $result;
 }
