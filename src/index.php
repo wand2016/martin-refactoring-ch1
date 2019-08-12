@@ -60,21 +60,13 @@ function statement($invoice, $plays){
 
 function renderPlainText($data)
 {
-    $volumeCreditsFor = function ($aPerformance) {
-        $result = 0;
-        $result += max($aPerformance['audience'] - 30, 0);
-        if ('comedy' === $aPerformance['play']['type']) $result += floor($aPerformance['audience'] / 5);
-        return $result;
-    };
-
     $usd = function ($aNumber) {
         $format = '$%.2f';
         return sprintf($format, $aNumber / 100);
     };
 
     $totalVolumeCredits = function () use (
-        $data,
-        $volumeCreditsFor
+        $data
     ) {
         $volumeCredits = 0;
         foreach ($data['performances'] as $perf) {
