@@ -29,13 +29,23 @@ function statement($invoice, $plays){
         return $plays[$perf['playID']];
     };
 
+    $volumeCreditsFor = function ($aPerformance) {
+        $result = 0;
+        $result += max($aPerformance['audience'] - 30, 0);
+        if ('comedy' === $aPerformance['play']['type']) $result += floor($aPerformance['audience'] / 5);
+        return $result;
+    };
+
+
     $enrichPerformance = function ($aPerformance) use (
         $playFor,
-        $amountFor
+        $amountFor,
+        $volumeCreditsFor
     ){
         // PHPの配列は値渡し
         $aPerformance['play'] = $playFor($aPerformance);
         $aPerformance['amount'] = $amountFor($aPerformance);
+        $aPerformance['volumeCredits'] = $volumeCreditsFor($aPerformance);
         return $aPerformance;
     };
 
@@ -68,7 +78,7 @@ function renderPlainText($data)
     ) {
         $volumeCredits = 0;
         foreach ($data['performances'] as $perf) {
-            $volumeCredits += $volumeCreditsFor($perf);
+            $volumeCredits += $perf['volumeCredits'];
         }
         return $volumeCredits;
     };
