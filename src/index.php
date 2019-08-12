@@ -1,7 +1,10 @@
 <?php
 
 function statement($invoice, $plays){
+    return renderPlainText(createStatementData($invoice, $plays));
+}
 
+function createStatementData($invoice, $plays){
     $amountFor = function ($aPerformance) {
         $result = 0;
         switch ($aPerformance['play']['type']) {
@@ -79,7 +82,7 @@ function statement($invoice, $plays){
     $statementData['totalVolumeCredits'] = $totalVolumeCredits($statementData);
     $statementData['totalAmount'] = $totalAmount($statementData);
 
-    return renderPlainText($statementData);
+    return $statementData;
 }
 
 function renderPlainText($data)
