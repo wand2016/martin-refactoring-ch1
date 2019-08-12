@@ -3,6 +3,7 @@
 namespace App;
 
 use App\PerformanceCalculator;
+use App\TragedyCalculator;
 
 class CreateStatementData
 {
@@ -10,6 +11,13 @@ class CreateStatementData
         $aPerformance,
         $aPlay
     ){
+        switch($aPlay['type']) {
+            case 'tragedy':
+                return new TragedyCalculator(
+                    $aPerformance,
+                    $aPlay
+                );
+        }
         return new PerformanceCalculator(
             $aPerformance,
             $aPlay

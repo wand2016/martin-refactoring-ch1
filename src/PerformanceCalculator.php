@@ -4,8 +4,8 @@ namespace App;
 
 class PerformanceCalculator
 {
-    private $aPerformance;
-    private $aPlay;
+    protected $aPerformance;
+    protected $aPlay;
 
     public function __construct(
         $aPerformance,
@@ -26,10 +26,7 @@ class PerformanceCalculator
         $result = 0;
         switch ($this->play()['type']) {
             case 'tragedy':
-                $result = 40000;
-                if ($this->aPerformance['audience'] > 30) {
-                    $result += 1000 * ($this->aPerformance['audience'] - 30);
-                }
+                throw new Error('boo');
                 break;
             case 'comedy':
                 $result = 30000;
