@@ -6,7 +6,7 @@ function statement($invoice, $plays)
         return $plays[$perf['playID']];
     };
 
-    $amountFor = function ($aPerformance, $play) use ($playFor)
+    $amountFor = function ($aPerformance) use ($playFor)
     {
         $result = 0;
         switch ($playFor($aPerformance)['type']) {
@@ -38,7 +38,7 @@ function statement($invoice, $plays)
     $format = '$%.2f';
 
     foreach ($invoice['performances'] as $perf) {
-        $thisAmount = $amountFor($perf, $playFor($perf));
+        $thisAmount = $amountFor($perf);
 
         // add volume credits
         $volumeCredits += max($perf['audience'] - 30, 0);
