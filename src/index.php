@@ -38,16 +38,15 @@ function statement($invoice, $plays)
     $format = '$%.2f';
 
     foreach ($invoice['performances'] as $perf) {
-        $play = $playFor($perf);
-        $thisAmount = $amountFor($perf, $play);
+        $thisAmount = $amountFor($perf, $playFor($perf));
 
         // add volume credits
         $volumeCredits += max($perf['audience'] - 30, 0);
         // add extra credit for every ten comedy attendees
-        if ('comedy' === $play['type']) $volumeCredits += floor($perf['audience'] / 5);
+        if ('comedy' === $playFor($perf)['type']) $volumeCredits += floor($perf['audience'] / 5);
 
         // print line for this order
-        $result .= "  ${play['name']}: " . sprintf($format, $thisAmount / 100) . "(${perf['audience']} seats)" . PHP_EOL;
+        $result .= '  ' . $playFor($perf)['name']. ': ' . sprintf($format, $thisAmount / 100) . "(${perf['audience']} seats)" . PHP_EOL;
         $totalAmount += $thisAmount;
     }
 
