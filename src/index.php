@@ -26,13 +26,19 @@ function statement($invoice, $plays)
         return $result;
     };
 
+    $playFor = function ($perf) use ($plays) {
+        return $plays[$perf['playID']];
+    };
+
+    // ----------------------------------------
+
     $totalAmount = 0;
     $volumeCredits = 0;
     $result = "Statement for ${invoice['customer']}";
     $format = '$%.2f';
 
     foreach ($invoice['performances'] as $perf) {
-        $play = $plays[$perf['playID']];
+        $play = $playFor($perf);
         $thisAmount = $amountFor($perf, $play);
 
         // add volume credits
