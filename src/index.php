@@ -45,14 +45,13 @@ function statement($invoice, $plays)
     // ----------------------------------------
 
     $totalAmount = 0;
-    $volumeCredits = 0;
     $result = "Statement for ${invoice['customer']}";
-
     foreach ($invoice['performances'] as $perf) {
         // print line for this order
         $result .= '  ' . $playFor($perf)['name']. ': ' . $usd($amountFor($perf)) . "(${perf['audience']} seats)" . PHP_EOL;
         $totalAmount += $amountFor($perf);
     }
+    $volumeCredits = 0;
     foreach ($invoice['performances'] as $perf) {
         $volumeCredits += $volumeCreditsFor($perf);
     }
