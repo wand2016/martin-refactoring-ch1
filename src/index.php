@@ -53,7 +53,7 @@ function statement($invoice, $plays)
         return $volumeCredits;
     };
 
-    $appleSause = function () use ($invoice, $amountFor) {
+    $totalAmount = function () use ($invoice, $amountFor) {
         $result = 0;
         foreach ($invoice['performances'] as $perf) {
             $result += $amountFor($perf);
@@ -72,7 +72,7 @@ function statement($invoice, $plays)
         $result .= '  ' . $playFor($perf)['name']. ': ' . $usd($amountFor($perf)) . "(${perf['audience']} seats)" . PHP_EOL;
     }
 
-    $result .= 'Amount owed is ' . $usd($appleSause()) . PHP_EOL;
+    $result .= 'Amount owed is ' . $usd($totalAmount()) . PHP_EOL;
     $result .= 'You earned '. $totalVolumeCredits() . ' credits' . PHP_EOL;
     return $result;
 }
