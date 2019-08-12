@@ -42,6 +42,17 @@ function statement($invoice, $plays)
         return sprintf($format, $aNumber / 100);
     };
 
+    $totalVolumeCredits = function() use (
+        $invoice,
+        $volumeCreditsFor
+    ) {
+        $volumeCredits = 0;
+        foreach ($invoice['performances'] as $perf) {
+            $volumeCredits += $volumeCreditsFor($perf);
+        }
+        return $volumeCredits;
+    };
+
     // ----------------------------------------
 
     $totalAmount = 0;
@@ -51,10 +62,7 @@ function statement($invoice, $plays)
         $result .= '  ' . $playFor($perf)['name']. ': ' . $usd($amountFor($perf)) . "(${perf['audience']} seats)" . PHP_EOL;
         $totalAmount += $amountFor($perf);
     }
-    $volumeCredits = 0;
-    foreach ($invoice['performances'] as $perf) {
-        $volumeCredits += $volumeCreditsFor($perf);
-    }
+    $volumeCredits = $totalVolumeCredits();
 
     $result .= 'Amount owed is ' . $usd($totalAmount) . PHP_EOL;
     $result .= "You earned ${volumeCredits} credits" . PHP_EOL;
