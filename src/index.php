@@ -65,6 +65,6 @@ function statement($invoice, $plays)
     $volumeCredits = $totalVolumeCredits();
 
     $result .= 'Amount owed is ' . $usd($totalAmount) . PHP_EOL;
-    $result .= "You earned ${volumeCredits} credits" . PHP_EOL;
+    $result .= 'You earned '. $volumeCredits . ' credits' . PHP_EOL;
     return $result;
 }
