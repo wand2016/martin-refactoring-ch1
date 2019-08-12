@@ -1,13 +1,41 @@
 <?php
 
 function statement($invoice, $plays){
+
+    $amountFor = function ($aPerformance) {
+        $result = 0;
+        switch ($aPerformance['play']['type']) {
+            case 'tragedy':
+                $result = 40000;
+                if ($aPerformance['audience'] > 30) {
+                    $result += 1000 * ($aPerformance['audience'] - 30);
+                }
+                break;
+            case 'comedy':
+                $result = 30000;
+                if ($aPerformance['audience'] > 20) {
+                    $result += 10000 + 500 * ($aPerformance['audience'] - 20);
+                }
+                $result += 300 * $aPerformance['audience'];
+                break;
+            default:
+                throw new Error('unknown type: ' . $aPerformance['play']['type']);
+        }
+
+        return $result;
+    };
+
     $playFor = function ($perf) use ($plays) {
         return $plays[$perf['playID']];
     };
 
-    $enrichPerformance = function ($aPerformance) use ($playFor){
+    $enrichPerformance = function ($aPerformance) use (
+        $playFor,
+        $amountFor
+    ){
         // PHPの配列は値渡し
         $aPerformance['play'] = $playFor($aPerformance);
+        $aPerformance['amount'] = $amountFor($aPerformance);
         return $aPerformance;
     };
 
@@ -71,7 +99,7 @@ function renderPlainText($data)
     $totalAmount = function () use ($data, $amountFor) {
         $result = 0;
         foreach ($data['performances'] as $perf) {
-            $result += $amountFor($perf);
+            $result += $perf['amount'];
         }
         return $result;
     };
@@ -84,7 +112,7 @@ function renderPlainText($data)
     $result = "Statement for ${data['customer']}";
     foreach ($data['performances'] as $perf) {
         // print line for this order
-        $result .= '  ' . $perf['play']['name'] . ': ' . $usd($amountFor($perf)) . "(${perf['audience']} seats)" . PHP_EOL;
+        $result .= '  ' . $perf['play']['name'] . ': ' . $usd($perf['amount']) . "(${perf['audience']} seats)" . PHP_EOL;
     }
 
     $result .= 'Amount owed is ' . $usd($totalAmount()) . PHP_EOL;
