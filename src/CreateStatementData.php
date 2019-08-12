@@ -6,6 +6,16 @@ use App\PerformanceCalculator;
 
 class CreateStatementData
 {
+    private function createPerformanceCalculator(
+        $aPerformance,
+        $aPlay
+    ){
+        return new PerformanceCalculator(
+            $aPerformance,
+            $aPlay
+        );
+    }
+
     public function __invoke($invoice, $plays)
     {
         $playFor = function ($perf) use ($plays) {
@@ -36,7 +46,7 @@ class CreateStatementData
         $enrichPerformance = function ($aPerformance) use (
             $playFor
         ) {
-            $performanceCalculator = new PerformanceCalculator(
+            $performanceCalculator = $this->createPerformanceCalculator(
                 $aPerformance,
                 $playFor($aPerformance)
             );
