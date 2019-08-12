@@ -4,6 +4,7 @@ namespace App;
 
 use App\PerformanceCalculator;
 use App\TragedyCalculator;
+use App\ComedyCalculator;
 
 class CreateStatementData
 {
@@ -17,11 +18,14 @@ class CreateStatementData
                     $aPerformance,
                     $aPlay
                 );
+            case 'comedy':
+                return new ComedyCalculator(
+                    $aPerformance,
+                    $aPlay
+                );
+            default:
+                throw new Error('unknown type: ' . $aPlay['type']);
         }
-        return new PerformanceCalculator(
-            $aPerformance,
-            $aPlay
-        );
     }
 
     public function __invoke($invoice, $plays)

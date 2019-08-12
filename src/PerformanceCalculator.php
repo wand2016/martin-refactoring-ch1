@@ -29,11 +29,7 @@ class PerformanceCalculator
                 throw new Error('boo');
                 break;
             case 'comedy':
-                $result = 30000;
-                if ($this->aPerformance['audience'] > 20) {
-                    $result += 10000 + 500 * ($this->aPerformance['audience'] - 20);
-                }
-                $result += 300 * $this->aPerformance['audience'];
+                throw new Error('bee');
                 break;
             default:
                 throw new Error('unknown type: ' . $this->play()['type']);
