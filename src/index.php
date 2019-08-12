@@ -1,77 +1,34 @@
 <?php
 
+use App\CreateStatementData;
+
 function statement($invoice, $plays)
 {
-    $playFor = function ($perf) use ($plays) {
-        return $plays[$perf['playID']];
-    };
+    $createStatementData = new CreateStatementData();
+    return renderPlainText($createStatementData($invoice, $plays));
+}
 
-    $amountFor = function ($aPerformance) use ($playFor) {
-        $result = 0;
-        switch ($playFor($aPerformance)['type']) {
-            case 'tragedy':
-                $result = 40000;
-                if ($aPerformance['audience'] > 30) {
-                    $result += 1000 * ($aPerformance['audience'] - 30);
-                }
-                break;
-            case 'comedy':
-                $result = 30000;
-                if ($aPerformance['audience'] > 20) {
-                    $result += 10000 + 500 * ($aPerformance['audience'] - 20);
-                }
-                $result += 300 * $aPerformance['audience'];
-                break;
-            default:
-                throw new Error('unknown type: ' . $playFor($aPerformance)['type']);
-        }
-
-        return $result;
-    };
-
-    $volumeCreditsFor = function ($aPerformance) use ($playFor) {
-        $result = 0;
-        $result += max($aPerformance['audience'] - 30, 0);
-        if ('comedy' === $playFor($aPerformance)['type']) $result += floor($aPerformance['audience'] / 5);
-        return $result;
-    };
-
-    $usd = function ($aNumber) {
-        $format = '$%.2f';
-        return sprintf($format, $aNumber / 100);
-    };
-
-    $totalVolumeCredits = function () use (
-        $invoice,
-        $volumeCreditsFor
-    ) {
-        $volumeCredits = 0;
-        foreach ($invoice['performances'] as $perf) {
-            $volumeCredits += $volumeCreditsFor($perf);
-        }
-        return $volumeCredits;
-    };
-
-    $totalAmount = function () use ($invoice, $amountFor) {
-        $result = 0;
-        foreach ($invoice['performances'] as $perf) {
-            $result += $amountFor($perf);
-        }
-        return $result;
-    };
-
-
-
-    // ----------------------------------------
-
-
-    $result = "Statement for ${invoice['customer']}";
-    foreach ($invoice['performances'] as $perf) {
+function renderPlainText($data)
+{
+    $result = "Statement for ${data['customer']}";
+    foreach ($data['performances'] as $aPerformance) {
         // print line for this order
-        $result .= '  ' . $playFor($perf)['name'] . ': ' . $usd($amountFor($perf)) . "(${perf['audience']} seats)" . PHP_EOL;
+        $result .= '  ' . $aPerformance['play']['name'] . ': ' . usd($aPerformance['amount']) . "(${aPerformance['audience']} seats)" . PHP_EOL;
     }
 
-    $result .= 'Amount owed is ' . $usd($totalAmount()) . PHP_EOL;
-    $result .= 'You earned ' . $totalVolumeCredits() . ' credits' . PHP_EOL;
+    $result .= 'Amount owed is ' . usd($data['totalAmount']) . PHP_EOL;
+    $result .= 'You earned ' . $data['totalVolumeCredits'] . ' credits' . PHP_EOL;
     return $result;
+}
+
+// stub
+function renderHtml($data)
+{
+    return '';
+}
+
+function usd($aNumber)
+{
+    $format = '$%.2f';
+    return sprintf($format, $aNumber / 100);
 }
