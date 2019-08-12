@@ -54,11 +54,11 @@ function statement($invoice, $plays)
     };
 
     $appleSause = function () use ($invoice, $amountFor) {
-        $totalAmount = 0;
+        $result = 0;
         foreach ($invoice['performances'] as $perf) {
-            $totalAmount += $amountFor($perf);
+            $result += $amountFor($perf);
         }
-        return $totalAmount;
+        return $result;
     };
 
 
