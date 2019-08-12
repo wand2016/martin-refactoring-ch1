@@ -49,8 +49,7 @@ function statement($invoice, $plays){
     $enrichPerformance = function ($aPerformance) use (
         $playFor,
         $amountFor,
-        $volumeCreditsFor,
-        $totalVolumeCredits
+        $volumeCreditsFor
     ){
         // PHPの配列は値渡し
         $aPerformance['play'] = $playFor($aPerformance);
@@ -76,16 +75,6 @@ function renderPlainText($data)
         return sprintf($format, $aNumber / 100);
     };
 
-    $totalVolumeCredits = function () use (
-        $data
-    ) {
-        $volumeCredits = 0;
-        foreach ($data['performances'] as $perf) {
-            $volumeCredits += $perf['volumeCredits'];
-        }
-        return $volumeCredits;
-    };
-
     $totalAmount = function () use ($data) {
         $result = 0;
         foreach ($data['performances'] as $perf) {
@@ -93,8 +82,6 @@ function renderPlainText($data)
         }
         return $result;
     };
-
-
 
     // ----------------------------------------
 
