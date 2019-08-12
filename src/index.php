@@ -3,6 +3,7 @@
 function statement($invoice, $plays){
     $statementData = [];
     $statementData['customer'] = $invoice['customer'];
+    $statementData['performances'] = $invoice['performances'];
     return renderPlainText($statementData, $invoice, $plays);
 }
 
@@ -48,19 +49,19 @@ function renderPlainText($data, $invoice, $plays)
     };
 
     $totalVolumeCredits = function () use (
-        $invoice,
+        $data,
         $volumeCreditsFor
     ) {
         $volumeCredits = 0;
-        foreach ($invoice['performances'] as $perf) {
+        foreach ($data['performances'] as $perf) {
             $volumeCredits += $volumeCreditsFor($perf);
         }
         return $volumeCredits;
     };
 
-    $totalAmount = function () use ($invoice, $amountFor) {
+    $totalAmount = function () use ($data, $amountFor) {
         $result = 0;
-        foreach ($invoice['performances'] as $perf) {
+        foreach ($data['performances'] as $perf) {
             $result += $amountFor($perf);
         }
         return $result;
@@ -72,7 +73,7 @@ function renderPlainText($data, $invoice, $plays)
 
 
     $result = "Statement for ${data['customer']}";
-    foreach ($invoice['performances'] as $perf) {
+    foreach ($data['performances'] as $perf) {
         // print line for this order
         $result .= '  ' . $playFor($perf)['name'] . ': ' . $usd($amountFor($perf)) . "(${perf['audience']} seats)" . PHP_EOL;
     }
