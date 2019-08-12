@@ -38,16 +38,14 @@ function statement($invoice, $plays)
     $format = '$%.2f';
 
     foreach ($invoice['performances'] as $perf) {
-        $thisAmount = $amountFor($perf);
-
         // add volume credits
         $volumeCredits += max($perf['audience'] - 30, 0);
         // add extra credit for every ten comedy attendees
         if ('comedy' === $playFor($perf)['type']) $volumeCredits += floor($perf['audience'] / 5);
 
         // print line for this order
-        $result .= '  ' . $playFor($perf)['name']. ': ' . sprintf($format, $thisAmount / 100) . "(${perf['audience']} seats)" . PHP_EOL;
-        $totalAmount += $thisAmount;
+        $result .= '  ' . $playFor($perf)['name']. ': ' . sprintf($format, $amountFor($perf) / 100) . "(${perf['audience']} seats)" . PHP_EOL;
+        $totalAmount += $amountFor($perf);
     }
 
     $result .= 'Amount owed is ' . sprintf($format, $totalAmount / 100) . PHP_EOL;
