@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\PerformanceCalculator;
+
 class CreateStatementData
 {
     public function __invoke($invoice, $plays)
@@ -66,7 +68,8 @@ class CreateStatementData
             $amountFor,
             $volumeCreditsFor
         ) {
-            // PHPの配列は値渡し
+            $performanceCalculator = new PerformanceCalculator($aPerformance);
+
             $aPerformance['play'] = $playFor($aPerformance);
             $aPerformance['amount'] = $amountFor($aPerformance);
             $aPerformance['volumeCredits'] = $volumeCreditsFor($aPerformance);
