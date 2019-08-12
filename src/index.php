@@ -2,6 +2,7 @@
 
 function statement($invoice, $plays){
     $statementData = [];
+    $statementData['customer'] = $invoice['customer'];
     return renderPlainText($statementData, $invoice, $plays);
 }
 
@@ -70,7 +71,7 @@ function renderPlainText($data, $invoice, $plays)
     // ----------------------------------------
 
 
-    $result = "Statement for ${invoice['customer']}";
+    $result = "Statement for ${data['customer']}";
     foreach ($invoice['performances'] as $perf) {
         // print line for this order
         $result .= '  ' . $playFor($perf)['name'] . ': ' . $usd($amountFor($perf)) . "(${perf['audience']} seats)" . PHP_EOL;
