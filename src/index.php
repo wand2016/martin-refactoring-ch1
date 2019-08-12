@@ -85,14 +85,6 @@ function renderPlainText($data)
         return sprintf($format, $aNumber / 100);
     };
 
-    $totalAmount = function () use ($data) {
-        $result = 0;
-        foreach ($data['performances'] as $perf) {
-            $result += $perf['amount'];
-        }
-        return $result;
-    };
-
     // ----------------------------------------
 
 
