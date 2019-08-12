@@ -62,9 +62,7 @@ function statement($invoice, $plays)
         $result .= '  ' . $playFor($perf)['name']. ': ' . $usd($amountFor($perf)) . "(${perf['audience']} seats)" . PHP_EOL;
         $totalAmount += $amountFor($perf);
     }
-    $volumeCredits = $totalVolumeCredits();
-
     $result .= 'Amount owed is ' . $usd($totalAmount) . PHP_EOL;
-    $result .= 'You earned '. $volumeCredits . ' credits' . PHP_EOL;
+    $result .= 'You earned '. $totalVolumeCredits() . ' credits' . PHP_EOL;
     return $result;
 }
