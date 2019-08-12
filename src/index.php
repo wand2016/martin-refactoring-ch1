@@ -1,9 +1,17 @@
 <?php
 
 function statement($invoice, $plays){
+    $enrichPerformance = function ($aPerformance) {
+        // PHPの配列は値渡し
+        return $aPerformance;
+    };
+
     $statementData = [];
     $statementData['customer'] = $invoice['customer'];
-    $statementData['performances'] = $invoice['performances'];
+    $statementData['performances'] = array_map(
+        $enrichPerformance,
+        $invoice['performances']
+    );
     return renderPlainText($statementData, $plays);
 }
 
