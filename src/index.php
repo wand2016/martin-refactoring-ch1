@@ -49,11 +49,12 @@ function statement($invoice, $plays)
     $result = "Statement for ${invoice['customer']}";
 
     foreach ($invoice['performances'] as $perf) {
-        $volumeCredits += $volumeCreditsFor($perf);
-
         // print line for this order
         $result .= '  ' . $playFor($perf)['name']. ': ' . $usd($amountFor($perf)) . "(${perf['audience']} seats)" . PHP_EOL;
         $totalAmount += $amountFor($perf);
+    }
+    foreach ($invoice['performances'] as $perf) {
+        $volumeCredits += $volumeCreditsFor($perf);
     }
 
     $result .= 'Amount owed is ' . $usd($totalAmount) . PHP_EOL;
