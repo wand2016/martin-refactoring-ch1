@@ -31,10 +31,10 @@ function statement($invoice, $plays)
     };
 
     $volumeCreditsFor = function ($perf) use ($playFor) {
-        $volumeCredits = 0;
-        $volumeCredits += max($perf['audience'] - 30, 0);
-        if ('comedy' === $playFor($perf)['type']) $volumeCredits += floor($perf['audience'] / 5);
-        return $volumeCredits;
+        $result = 0;
+        $result += max($perf['audience'] - 30, 0);
+        if ('comedy' === $playFor($perf)['type']) $result += floor($perf['audience'] / 5);
+        return $result;
     };
 
     // ----------------------------------------
