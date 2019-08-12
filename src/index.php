@@ -38,11 +38,13 @@ function statement($invoice, $plays){
 
     $totalVolumeCredits = function ($data)
     {
-        $volumeCredits = 0;
-        foreach ($data['performances'] as $perf) {
-            $volumeCredits += $perf['volumeCredits'];
-        }
-        return $volumeCredits;
+        return array_reduce(
+            $data['performances'],
+            function($accumulator, $aPerformance) {
+                return $accumulator + $aPerformance['volumeCredits'];
+            },
+            0
+        );
     };
 
     $totalAmount = function ($data) {
