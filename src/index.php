@@ -2,10 +2,14 @@
 
 function statement($invoice, $plays)
 {
-    $amountFor = function ($aPerformance, $play)
+    $playFor = function ($perf) use ($plays) {
+        return $plays[$perf['playID']];
+    };
+
+    $amountFor = function ($aPerformance, $play) use ($playFor)
     {
         $result = 0;
-        switch ($play['type']) {
+        switch ($playFor($aPerformance)['type']) {
             case 'tragedy':
                 $result = 40000;
                 if ($aPerformance['audience'] > 30) {
@@ -20,14 +24,10 @@ function statement($invoice, $plays)
                 $result += 300 * $aPerformance['audience'];
                 break;
             default:
-                throw new Error("unknown type: ${$play['type']}");
+                throw new Error('unknown type: ' . $playFor($aPerformance)['type']);
         }
 
         return $result;
-    };
-
-    $playFor = function ($perf) use ($plays) {
-        return $plays[$perf['playID']];
     };
 
     // ----------------------------------------
