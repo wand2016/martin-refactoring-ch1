@@ -43,4 +43,11 @@ class PerformanceCalculator
         }
         return $result;
     }
+
+    public function volumeCredits() {
+        $result = 0;
+        $result += max($this->aPerformance['audience'] - 30, 0);
+        if ('comedy' === $this->play()['type']) $result += floor($this->aPerformance['audience'] / 5);
+        return $result;
+    }
 }

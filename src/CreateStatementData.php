@@ -21,11 +21,11 @@ class CreateStatementData
             ))->amount();
         };
 
-        $volumeCreditsFor = function ($aPerformance) {
-            $result = 0;
-            $result += max($aPerformance['audience'] - 30, 0);
-            if ('comedy' === $aPerformance['play']['type']) $result += floor($aPerformance['audience'] / 5);
-            return $result;
+        $volumeCreditsFor = function ($aPerformance) use ($playFor) {
+            return (new PerformanceCalculator(
+                $aPerformance,
+                $playFor($aPerformance)
+            ))->volumeCredits();
         };
 
         $totalVolumeCredits = function ($data) {
