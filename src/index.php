@@ -45,6 +45,14 @@ function statement($invoice, $plays){
         return $volumeCredits;
     };
 
+    $totalAmount = function ($data) {
+        $result = 0;
+        foreach ($data['performances'] as $perf) {
+            $result += $perf['amount'];
+        }
+        return $result;
+    };
+
 
     $enrichPerformance = function ($aPerformance) use (
         $playFor,
@@ -65,6 +73,8 @@ function statement($invoice, $plays){
         $invoice['performances']
     );
     $statementData['totalVolumeCredits'] = $totalVolumeCredits($statementData);
+    $statementData['totalAmount'] = $totalAmount($statementData);
+
     return renderPlainText($statementData);
 }
 
@@ -92,7 +102,7 @@ function renderPlainText($data)
         $result .= '  ' . $perf['play']['name'] . ': ' . $usd($perf['amount']) . "(${perf['audience']} seats)" . PHP_EOL;
     }
 
-    $result .= 'Amount owed is ' . $usd($totalAmount()) . PHP_EOL;
+    $result .= 'Amount owed is ' . $usd($data['totalAmount']) . PHP_EOL;
     $result .= 'You earned ' . $data['totalVolumeCredits'] . ' credits' . PHP_EOL;
     return $result;
 }
