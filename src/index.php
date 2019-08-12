@@ -37,9 +37,9 @@ function statement($invoice, $plays)
         return $result;
     };
 
-    $format = function($aNumber) {
+    $usd = function($aNumber) {
         $format = '$%.2f';
-        return sprintf($format, $aNumber);
+        return sprintf($format, $aNumber / 100);
     };
 
     // ----------------------------------------
@@ -52,11 +52,11 @@ function statement($invoice, $plays)
         $volumeCredits += $volumeCreditsFor($perf);
 
         // print line for this order
-        $result .= '  ' . $playFor($perf)['name']. ': ' . $format($amountFor($perf) / 100) . "(${perf['audience']} seats)" . PHP_EOL;
+        $result .= '  ' . $playFor($perf)['name']. ': ' . $usd($amountFor($perf)) . "(${perf['audience']} seats)" . PHP_EOL;
         $totalAmount += $amountFor($perf);
     }
 
-    $result .= 'Amount owed is ' . $format($totalAmount / 100) . PHP_EOL;
+    $result .= 'Amount owed is ' . $usd($totalAmount) . PHP_EOL;
     $result .= "You earned ${volumeCredits} credits" . PHP_EOL;
     return $result;
 }
