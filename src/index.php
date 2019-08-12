@@ -17,16 +17,12 @@ function statement($invoice, $plays){
         $enrichPerformance,
         $invoice['performances']
     );
-    return renderPlainText($statementData, $plays);
+    return renderPlainText($statementData);
 }
 
-function renderPlainText($data, $plays)
+function renderPlainText($data)
 {
-    $playFor = function ($perf) use ($plays) {
-        return $plays[$perf['playID']];
-    };
-
-    $amountFor = function ($aPerformance) use ($playFor) {
+    $amountFor = function ($aPerformance) {
         $result = 0;
         switch ($aPerformance['play']['type']) {
             case 'tragedy':
@@ -49,7 +45,7 @@ function renderPlainText($data, $plays)
         return $result;
     };
 
-    $volumeCreditsFor = function ($aPerformance) use ($playFor) {
+    $volumeCreditsFor = function ($aPerformance) {
         $result = 0;
         $result += max($aPerformance['audience'] - 30, 0);
         if ('comedy' === $aPerformance['play']['type']) $result += floor($aPerformance['audience'] / 5);
