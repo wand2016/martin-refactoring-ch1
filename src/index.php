@@ -35,7 +35,6 @@ function statement($invoice, $plays)
         if ('comedy' === $play['type']) $volumeCredits += floor($perf['audience'] / 5);
 
         // print line for this order
-        echo sprintf($format, $thisAmount / 100);
         $result .= "  ${play['name']}: " . sprintf($format, $thisAmount / 100) . "(${perf['audience']} seats)" . PHP_EOL;
         $totalAmount += $thisAmount;
     }
