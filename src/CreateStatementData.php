@@ -12,22 +12,6 @@ class CreateStatementData
             return $plays[$perf['playID']];
         };
 
-        $amountFor = function ($aPerformance) use (
-            $playFor
-        ){
-            return (new PerformanceCalculator(
-                $aPerformance,
-                $playFor($aPerformance)
-            ))->amount();
-        };
-
-        $volumeCreditsFor = function ($aPerformance) use ($playFor) {
-            return (new PerformanceCalculator(
-                $aPerformance,
-                $playFor($aPerformance)
-            ))->volumeCredits();
-        };
-
         $totalVolumeCredits = function ($data) {
             return array_reduce(
                 $data['performances'],
@@ -50,9 +34,7 @@ class CreateStatementData
 
 
         $enrichPerformance = function ($aPerformance) use (
-            $playFor,
-            $amountFor,
-            $volumeCreditsFor
+            $playFor
         ) {
             $performanceCalculator = new PerformanceCalculator(
                 $aPerformance,
@@ -60,8 +42,8 @@ class CreateStatementData
             );
 
             $aPerformance['play'] = $performanceCalculator->play();
-            $aPerformance['amount'] = $amountFor($aPerformance);
-            $aPerformance['volumeCredits'] = $volumeCreditsFor($aPerformance);
+            $aPerformance['amount'] = $performanceCalculator->amount();
+            $aPerformance['volumeCredits'] = $performanceCalculator->volumeCredits();
             return $aPerformance;
         };
 
