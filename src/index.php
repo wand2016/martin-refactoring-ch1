@@ -2,15 +2,9 @@
 
 function statement($invoice, $plays)
 {
-    $totalAmount = 0;
-    $volumeCredits = 0;
-    $result = "Statement for ${invoice['customer']}";
-    $format = '$%.2f';
-
-    foreach ($invoice['performances'] as $perf) {
-        $play = $plays[$perf['playID']];
+    $amountFor = function ($perf, $play)
+    {
         $thisAmount = 0;
-
         switch ($play['type']) {
             case 'tragedy':
                 $thisAmount = 40000;
@@ -28,6 +22,18 @@ function statement($invoice, $plays)
             default:
                 throw new Error("unknown type: ${$play['type']}");
         }
+
+        return $thisAmount;
+    };
+
+    $totalAmount = 0;
+    $volumeCredits = 0;
+    $result = "Statement for ${invoice['customer']}";
+    $format = '$%.2f';
+
+    foreach ($invoice['performances'] as $perf) {
+        $play = $plays[$perf['playID']];
+        $thisAmount = $amountFor($perf, $play);
 
         // add volume credits
         $volumeCredits += max($perf['audience'] - 30, 0);
