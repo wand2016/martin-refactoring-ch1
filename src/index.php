@@ -4,10 +4,10 @@ function statement($invoice, $plays){
     $statementData = [];
     $statementData['customer'] = $invoice['customer'];
     $statementData['performances'] = $invoice['performances'];
-    return renderPlainText($statementData, $invoice, $plays);
+    return renderPlainText($statementData, $plays);
 }
 
-function renderPlainText($data, $invoice, $plays)
+function renderPlainText($data, $plays)
 {
     $playFor = function ($perf) use ($plays) {
         return $plays[$perf['playID']];
