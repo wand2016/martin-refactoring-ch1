@@ -48,11 +48,13 @@ function statement($invoice, $plays){
     };
 
     $totalAmount = function ($data) {
-        $result = 0;
-        foreach ($data['performances'] as $perf) {
-            $result += $perf['amount'];
-        }
-        return $result;
+        return array_reduce(
+            $data['performances'],
+            function($accumulator, $aPerformance) {
+                return $accumulator + $aPerformance['amount'];
+            },
+            0
+        );
     };
 
 
