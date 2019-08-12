@@ -37,22 +37,26 @@ function statement($invoice, $plays)
         return $result;
     };
 
+    $format = function($aNumber) {
+        $format = '$%.2f';
+        return sprintf($format, $aNumber);
+    };
+
     // ----------------------------------------
 
     $totalAmount = 0;
     $volumeCredits = 0;
     $result = "Statement for ${invoice['customer']}";
-    $format = '$%.2f';
 
     foreach ($invoice['performances'] as $perf) {
         $volumeCredits += $volumeCreditsFor($perf);
 
         // print line for this order
-        $result .= '  ' . $playFor($perf)['name']. ': ' . sprintf($format, $amountFor($perf) / 100) . "(${perf['audience']} seats)" . PHP_EOL;
+        $result .= '  ' . $playFor($perf)['name']. ': ' . $format($amountFor($perf) / 100) . "(${perf['audience']} seats)" . PHP_EOL;
         $totalAmount += $amountFor($perf);
     }
 
-    $result .= 'Amount owed is ' . sprintf($format, $totalAmount / 100) . PHP_EOL;
+    $result .= 'Amount owed is ' . $format($totalAmount / 100) . PHP_EOL;
     $result .= "You earned ${volumeCredits} credits" . PHP_EOL;
     return $result;
 }
