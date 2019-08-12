@@ -36,11 +36,21 @@ function statement($invoice, $plays){
         return $result;
     };
 
+    $totalVolumeCredits = function ($data)
+    {
+        $volumeCredits = 0;
+        foreach ($data['performances'] as $perf) {
+            $volumeCredits += $perf['volumeCredits'];
+        }
+        return $volumeCredits;
+    };
+
 
     $enrichPerformance = function ($aPerformance) use (
         $playFor,
         $amountFor,
-        $volumeCreditsFor
+        $volumeCreditsFor,
+        $totalVolumeCredits
     ){
         // PHPの配列は値渡し
         $aPerformance['play'] = $playFor($aPerformance);
@@ -55,6 +65,7 @@ function statement($invoice, $plays){
         $enrichPerformance,
         $invoice['performances']
     );
+    $statementData['totalVolumeCredits'] = $totalVolumeCredits($statementData);
     return renderPlainText($statementData);
 }
 
@@ -95,6 +106,6 @@ function renderPlainText($data)
     }
 
     $result .= 'Amount owed is ' . $usd($totalAmount()) . PHP_EOL;
-    $result .= 'You earned ' . $totalVolumeCredits() . ' credits' . PHP_EOL;
+    $result .= 'You earned ' . $data['totalVolumeCredits'] . ' credits' . PHP_EOL;
     return $result;
 }
